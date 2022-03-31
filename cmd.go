@@ -4,6 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
+
+	"pineapple/classpath"
 )
 
 type Cmd struct {
@@ -38,7 +41,15 @@ func PrintUsage() {
 	fmt.Printf("\t or %s [-options] -jar jarfile [args]\n", os.Args[0])
 }
 func StartJVM(cmd *Cmd) {
-	fmt.Printf("classpath:%s class:%s args:%v\n", cmd.cpOption, cmd.Class, cmd.args)
+	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	fmt.Printf("classpath:%v class:%v args:%v \n", cp, cmd.Class, cmd.args)
+	className := strings.Replace(cmd.Class, ".", "/", -1)
+	classData, _, err := cp.ReadClass(className)
+	if err != nil {
+		fmt.Printf("Could not find or load main class %s \n", cmd.Class)
+		return
+	}
+	fmt.Printf("class data:%v\n", classData)
 }
 func PrintVersion() {
 	println("Version 0.0.1")
