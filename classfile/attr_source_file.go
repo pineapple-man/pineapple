@@ -1,9 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-	"pineapple/classfile/constantpool"
-)
+package classfile
 
 /*
 SourceFile 是可选定长属性，只会出现在 ClassFile 结构中，用于指出源文件名，
@@ -16,12 +11,12 @@ SourceFile_attribute {
 */
 
 type SourceFileAttribute struct {
-	constantPool    constantpool.ConstantPool
+	constantPool    ConstantPool
 	sourceFileIndex uint16
 }
 
-func (s *SourceFileAttribute) readInfo(reader *classfile.ClassReader) {
-	s.sourceFileIndex = reader.ReadUint16()
+func (s *SourceFileAttribute) readInfo(reader *ClassReader) {
+	s.sourceFileIndex = reader.readUint16()
 }
 
 // FileName 读取文件名称

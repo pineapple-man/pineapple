@@ -1,8 +1,4 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 CONSTANT_MethodType_info {
@@ -17,8 +13,8 @@ type ConstantMethodTypeInfo struct {
 	descriptorIndex uint16
 }
 
-func (c *ConstantMethodTypeInfo) readInfo(reader *classfile.ClassReader) {
-	c.descriptorIndex = reader.ReadUint16()
+func (c *ConstantMethodTypeInfo) readInfo(reader *ClassReader) {
+	c.descriptorIndex = reader.readUint16()
 }
 
 /*
@@ -37,9 +33,9 @@ type ConstantMethodHandleInfo struct {
 	referenceIndex uint16
 }
 
-func (c *ConstantMethodHandleInfo) readInfo(reader *classfile.ClassReader) {
-	c.referenceKind = reader.ReadUint8()
-	c.referenceIndex = reader.ReadUint16()
+func (c *ConstantMethodHandleInfo) readInfo(reader *ClassReader) {
+	c.referenceKind = reader.readUint8()
+	c.referenceIndex = reader.readUint16()
 }
 
 /*
@@ -58,7 +54,7 @@ type ConstantInvokeDynamicInfo struct {
 	nameAndTypeIndex uint16
 }
 
-func (c *ConstantInvokeDynamicInfo) readInfo(reader *classfile.ClassReader) {
-	c.bootstrapMethodAttrIndex = reader.ReadUint16()
-	c.nameAndTypeIndex = reader.ReadUint16()
+func (c *ConstantInvokeDynamicInfo) readInfo(reader *ClassReader) {
+	c.bootstrapMethodAttrIndex = reader.readUint16()
+	c.nameAndTypeIndex = reader.readUint16()
 }

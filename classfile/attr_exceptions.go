@@ -1,8 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 
@@ -18,8 +14,8 @@ type ExceptionsAttribute struct {
 	exceptionIndexTable []uint16
 }
 
-func (e *ExceptionsAttribute) readInfo(reader *classfile.ClassReader) {
-	e.exceptionIndexTable = reader.ReadUint16s()
+func (e *ExceptionsAttribute) readInfo(reader *ClassReader) {
+	e.exceptionIndexTable = reader.readUint16s()
 }
 
 func (e *ExceptionsAttribute) ExceptionIndexTable() []uint16 {

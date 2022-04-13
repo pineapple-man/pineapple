@@ -1,20 +1,18 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 type ConstantPool []ConstantInfo
 
 type ConstantInfo interface {
 	// 读取常量信息，需要由具体的常量结构实现。
-	readInfo(reader *classfile.ClassReader)
+	readInfo(reader *ClassReader)
 }
 
 // 先读出 tag 值，然后调用 newConstantInfo 创建具体的常量
-func readConstantInfo(reader *classfile.ClassReader, cp ConstantPool) ConstantInfo {
-	tag := reader.ReadUint8()
-	return newConstantInfo(tag, cp)
+func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
+	tag := reader.readUint8()
+	c := newConstantInfo(tag, cp)
+	c.readInfo(reader)
+	return c
 }
 
 // 根据 tag 值创建具体的常量
@@ -55,8 +53,8 @@ func newConstantInfo(tag uint8, constantPool ConstantPool) ConstantInfo {
 }
 
 // ReadConstantPool 读取 class file 中的常量池信息
-func ReadConstantPool(reader *classfile.ClassReader) ConstantPool {
-	constantPoolCount := int(reader.ReadUint16())
+func ReadConstantPool(reader *ClassReader) ConstantPool {
+	constantPoolCount := int(reader.readUint16())
 	constantPool := make([]ConstantInfo, constantPoolCount)
 	// 常量池索引从 1 开始
 	for i := 1; i < constantPoolCount; i++ {

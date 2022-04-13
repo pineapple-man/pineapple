@@ -1,9 +1,7 @@
-package constantpool
+package classfile
 
 import (
 	"math"
-
-	"pineapple/classfile"
 )
 
 /*
@@ -19,8 +17,8 @@ type ConstantIntegerInfo struct {
 }
 
 // 先读取一个 uint32 数据，随后将它转型为 int32 类型
-func (c ConstantIntegerInfo) readInfo(reader *classfile.ClassReader) {
-	data := reader.ReadUint32()
+func (c ConstantIntegerInfo) readInfo(reader *ClassReader) {
+	data := reader.readUint32()
 	c.data = int32(data)
 }
 
@@ -36,8 +34,8 @@ type ConstantFloatInfo struct {
 	data float32
 }
 
-func (c *ConstantFloatInfo) readInfo(reader *classfile.ClassReader) {
-	data := reader.ReadUint32()
+func (c *ConstantFloatInfo) readInfo(reader *ClassReader) {
+	data := reader.readUint32()
 	c.data = math.Float32frombits(data)
 }
 
@@ -54,8 +52,8 @@ type ConstantLongInfo struct {
 }
 
 // 读取一个 unit64 数据，然后将其转型成 int64 类型
-func (c *ConstantLongInfo) readInfo(reader *classfile.ClassReader) {
-	data := reader.ReadUint64()
+func (c *ConstantLongInfo) readInfo(reader *ClassReader) {
+	data := reader.readUint64()
 	c.data = int64(data)
 }
 
@@ -71,7 +69,7 @@ type ConstantDoubleInfo struct {
 	data float64
 }
 
-func (c *ConstantDoubleInfo) readInfo(reader *classfile.ClassReader) {
-	data := reader.ReadUint64()
+func (c *ConstantDoubleInfo) readInfo(reader *ClassReader) {
+	data := reader.readUint64()
 	c.data = math.Float64frombits(data)
 }

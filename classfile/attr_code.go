@@ -1,9 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-	"pineapple/classfile/constantpool"
-)
+package classfile
 
 /*
 Code_attribute {
@@ -31,7 +26,7 @@ Code_attribute {
 */
 
 type CodeAttribute struct {
-	constantPool   constantpool.ConstantPool
+	constantPool   ConstantPool
 	maxStack       uint16
 	maxLocals      uint16
 	code           []byte
@@ -45,24 +40,24 @@ type ExceptionTableEntry struct {
 	catchType uint16
 }
 
-func (c *CodeAttribute) readInfo(reader *classfile.ClassReader) {
-	c.maxStack = reader.ReadUint16()
-	c.maxLocals = reader.ReadUint16()
-	codeLength := reader.ReadUint64()
-	c.code = reader.ReadBytes(codeLength)
+func (c *CodeAttribute) readInfo(reader *ClassReader) {
+	c.maxStack = reader.readUint16()
+	c.maxLocals = reader.readUint16()
+	codeLength := reader.readUint64()
+	c.code = reader.readBytes(codeLength)
 	c.exceptionTable = readExceptionTable(reader)
 	c.attributes = ReadAttributes(reader, c.constantPool)
 }
 
-func readExceptionTable(reader *classfile.ClassReader) []*ExceptionTableEntry {
-	exceptionTableLength := reader.ReadUint16()
+func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
+	exceptionTableLength := reader.readUint16()
 	exceptionTable := make([]*ExceptionTableEntry, exceptionTableLength)
 	for i := range exceptionTable {
 		exceptionTable[i] = &ExceptionTableEntry{
-			startPc:   reader.ReadUint16(),
-			endPc:     reader.ReadUint16(),
-			handlerPc: reader.ReadUint16(),
-			catchType: reader.ReadUint16(),
+			startPc:   reader.readUint16(),
+			endPc:     reader.readUint16(),
+			handlerPc: reader.readUint16(),
+			catchType: reader.readUint16(),
 		}
 	}
 	return exceptionTable

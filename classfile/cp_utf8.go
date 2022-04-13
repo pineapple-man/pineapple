@@ -1,10 +1,8 @@
-package constantpool
+package classfile
 
 import (
 	"fmt"
 	"unicode/utf16"
-
-	"pineapple/classfile"
 )
 
 /*
@@ -20,9 +18,9 @@ type ConstantUtf8Info struct {
 }
 
 // 读取出 []byte 随后调用 decodeMUTF8() 将其解码成为 Go 字符串
-func (c *ConstantUtf8Info) readInfo(reader *classfile.ClassReader) {
-	length := reader.ReadUint32()
-	bytes := reader.ReadByte(length)
+func (c *ConstantUtf8Info) readInfo(reader *ClassReader) {
+	length := uint32(reader.readUint16())
+	bytes := reader.readByte(length)
 	c.data = decodeMUTF8(bytes)
 }
 

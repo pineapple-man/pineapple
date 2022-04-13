@@ -1,9 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-	"pineapple/classfile/constantpool"
-)
+package classfile
 
 /*
 attribute_info {
@@ -14,12 +9,12 @@ attribute_info {
 */
 
 type Info interface {
-	readInfo(reader *classfile.ClassReader)
+	readInfo(reader *ClassReader)
 }
 
 // ReadAttributes 读取属性表
-func ReadAttributes(reader *classfile.ClassReader, constantPool constantpool.ConstantPool) []Info {
-	attributesCount := reader.ReadUint16()
+func ReadAttributes(reader *ClassReader, constantPool ConstantPool) []Info {
+	attributesCount := reader.readUint16()
 	attributes := make([]Info, attributesCount)
 	for i := range attributes {
 		attributes[i] = readAttribute(reader, constantPool)
@@ -28,10 +23,10 @@ func ReadAttributes(reader *classfile.ClassReader, constantPool constantpool.Con
 }
 
 // 读取单个属性
-func readAttribute(reader *classfile.ClassReader, constantPool constantpool.ConstantPool) Info {
-	attributeNameIndex := reader.ReadUint16()
+func readAttribute(reader *ClassReader, constantPool ConstantPool) Info {
+	attributeNameIndex := reader.readUint16()
 	attributeName := constantPool.GetUtf8(attributeNameIndex)
-	attributeLength := reader.ReadUint32()
+	attributeLength := reader.readUint32()
 	attributeInfo := newAttributeInfo(attributeName, attributeLength, constantPool)
 	attributeInfo.readInfo(reader)
 	return attributeInfo
@@ -40,12 +35,12 @@ func readAttribute(reader *classfile.ClassReader, constantPool constantpool.Cons
 type LocalVariableTableAttribute struct {
 }
 
-func (l *LocalVariableTableAttribute) readInfo(reader *classfile.ClassReader) {
+func (l *LocalVariableTableAttribute) readInfo(reader *ClassReader) {
 	// TODO implement me
 	panic("implement me")
 }
 
-func newAttributeInfo(attributeName string, attributeLength uint32, constantPool constantpool.ConstantPool) Info {
+func newAttributeInfo(attributeName string, attributeLength uint32, constantPool ConstantPool) Info {
 	switch attributeName {
 	case "Code":
 		return &CodeAttribute{constantPool: constantPool}

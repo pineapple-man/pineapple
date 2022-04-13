@@ -1,8 +1,4 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 CONSTANT_String_info {
@@ -22,6 +18,6 @@ func (c *ConstantStringInfo) String() string {
 }
 
 // 读取常量池索引
-func (c *ConstantStringInfo) readInfo(reader *classfile.ClassReader) {
-	c.stringIndex = reader.ReadUint16()
+func (c *ConstantStringInfo) readInfo(reader *ClassReader) {
+	c.stringIndex = reader.readUint16()
 }

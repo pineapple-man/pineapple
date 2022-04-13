@@ -1,8 +1,4 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 // ConstantMemberRefInfo 表示 CONSTANT_Fieldref_info、 CONSTANT_Methodref_info、CONSTANT_InterfaceMethodref_info
 // 以上三种常量的类型
@@ -15,9 +11,9 @@ type ConstantMemberRefInfo struct {
 	nameAndTypeIndex uint16
 }
 
-func (c *ConstantMemberRefInfo) readInfo(reader *classfile.ClassReader) {
-	c.classIndex = reader.ReadUint16()
-	c.nameAndTypeIndex = reader.ReadUint16()
+func (c *ConstantMemberRefInfo) readInfo(reader *ClassReader) {
+	c.classIndex = reader.readUint16()
+	c.nameAndTypeIndex = reader.readUint16()
 }
 func (c *ConstantMemberRefInfo) ClassName() string {
 	return c.constantPool.GetClassName(c.classIndex)

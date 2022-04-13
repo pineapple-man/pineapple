@@ -2,23 +2,20 @@ package classfile
 
 import (
 	"fmt"
-
-	"pineapple/classfile/attribute"
-	"pineapple/classfile/constantpool"
 )
 
 type ClassFile struct {
 	// magic        uint32 //this field is a flag ,so we need not  save it
 	minorVersion uint16
 	majorVersion uint16
-	constantPool constantpool.ConstantPool
+	constantPool ConstantPool
 	accessFlags  uint16
 	thisClass    uint16
 	superClass   uint16
 	interfaces   []uint16
 	fields       []*MemberInfo
 	methods      []*MemberInfo
-	attributes   []attribute.Info
+	attributes   []Info
 }
 
 // MinorVersion getter
@@ -32,7 +29,7 @@ func (c *ClassFile) MajorVersion() uint16 {
 }
 
 // ConstantPool getter
-func (c *ClassFile) ConstantPool() constantpool.ConstantPool {
+func (c *ClassFile) ConstantPool() ConstantPool {
 	return c.constantPool
 }
 
@@ -69,18 +66,18 @@ func Parse(classData []byte) (cf *ClassFile, err error) {
 func (c *ClassFile) read(reader *ClassReader) {
 	c.readAndCheckMagic(reader)
 	c.readAndCheckVersion(reader)
-	c.constantPool = constantpool.ReadConstantPool(reader)
-	c.accessFlags = reader.ReadUint16()
-	c.thisClass = reader.ReadUint16()
-	c.superClass = reader.ReadUint16()
+	c.constantPool = ReadConstantPool(reader)
+	c.accessFlags = reader.readUint16()
+	c.thisClass = reader.readUint16()
+	c.superClass = reader.readUint16()
 	c.fields = readerMembers(reader, c.constantPool)
 	c.methods = readerMembers(reader, c.constantPool)
-	c.attributes = attribute.ReadAttributes(reader, c.constantPool)
+	c.attributes = ReadAttributes(reader, c.constantPool)
 }
 
 // readAndCheckMagic : class 文件的魔数是 0xCAFEBABE，所以读取一个 class 文件的第一步就是检查文件开头的魔数是否正确
 func (c *ClassFile) readAndCheckMagic(reader *ClassReader) {
-	magic := reader.ReadUint32()
+	magic := reader.readUint32()
 	if magic != 0xCAFEBABE {
 		panic("Error: A JNI error has occurred, please check your installation and " +
 			"try again Exception in thread \"main\" java.lang.ClassFormatError: Incompatible" +
@@ -90,9 +87,9 @@ func (c *ClassFile) readAndCheckMagic(reader *ClassReader) {
 
 func (c *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	// 副版本
-	c.minorVersion = reader.ReadUint16()
+	c.minorVersion = reader.readUint16()
 	// 主版本
-	c.majorVersion = reader.ReadUint16()
+	c.majorVersion = reader.readUint16()
 	switch c.majorVersion {
 	case 45:
 		return

@@ -1,8 +1,4 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 CONSTANT_NameAndType_info {
@@ -20,7 +16,7 @@ type ConstantNameAndTypeInfo struct {
 	descriptorIndex uint16
 }
 
-func (c ConstantNameAndTypeInfo) readInfo(reader *classfile.ClassReader) {
-	c.nameIndex = reader.ReadUint16()
-	c.descriptorIndex = reader.ReadUint16()
+func (c ConstantNameAndTypeInfo) readInfo(reader *ClassReader) {
+	c.nameIndex = reader.readUint16()
+	c.descriptorIndex = reader.readUint16()
 }

@@ -1,35 +1,30 @@
 package classfile
 
-import (
-	"pineapple/classfile/attribute"
-	"pineapple/classfile/constantpool"
-)
-
 type MemberInfo struct {
-	constantPool    constantpool.ConstantPool // 常量池
-	accessFlags     uint16                    // 访问标志
-	nameIndex       uint16                    // 字段或方法名
-	descriptorIndex uint16                    // 字段或者方法描述符
-	attributes      []attribute.Info          // 字段的属性信息
+	constantPool    ConstantPool // 常量池
+	accessFlags     uint16       // 访问标志
+	nameIndex       uint16       // 字段或方法名
+	descriptorIndex uint16       // 字段或者方法描述符
+	attributes      []Info       // 字段的属性信息
 }
 
 // 读取字段表或方法表
-func readerMembers(reader *ClassReader, cp constantpool.ConstantPool) []*MemberInfo {
+func readerMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	// 字段或方法表计数器
-	memberCount := reader.ReadUint16()
+	memberCount := reader.readUint16()
 	members := make([]*MemberInfo, memberCount)
 	for i := range members {
 		members[i] = readerMember(reader, cp)
 	}
 	return members
 }
-func readerMember(reader *ClassReader, cp constantpool.ConstantPool) *MemberInfo {
+func readerMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 	return &MemberInfo{
 		constantPool:    cp,
-		accessFlags:     reader.ReadUint16(),
-		nameIndex:       reader.ReadUint16(),
-		descriptorIndex: reader.ReadUint16(),
-		attributes:      attribute.ReadAttributes(reader, cp),
+		accessFlags:     reader.readUint16(),
+		nameIndex:       reader.readUint16(),
+		descriptorIndex: reader.readUint16(),
+		attributes:      ReadAttributes(reader, cp),
 	}
 }
 

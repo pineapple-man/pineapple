@@ -1,8 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 
@@ -26,13 +22,13 @@ type LineNumberTableAttribute struct {
 	lineNumberTable []*LineNumberTableEntry
 }
 
-func (l *LineNumberTableAttribute) readInfo(reader *classfile.ClassReader) {
-	lineNumberTableLength := reader.ReadUint16()
+func (l *LineNumberTableAttribute) readInfo(reader *ClassReader) {
+	lineNumberTableLength := reader.readUint16()
 	lineNumberTableEntries := make([]*LineNumberTableEntry, lineNumberTableLength)
 	for i := range lineNumberTableEntries {
 		lineNumberTableEntries[i] = &LineNumberTableEntry{
-			startPc:    reader.ReadUint16(),
-			lineNumber: reader.ReadUint16(),
+			startPc:    reader.readUint16(),
+			lineNumber: reader.readUint16(),
 		}
 	}
 }

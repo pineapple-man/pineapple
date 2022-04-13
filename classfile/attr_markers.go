@@ -1,8 +1,4 @@
-package attribute
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*Deprecated_attribute {
 	u2 attribute_name_index;
@@ -25,6 +21,6 @@ type SyntheticAttribute struct {
 type MarketAttribute struct {
 }
 
-func (m *MarketAttribute) readInfo(reader *classfile.ClassReader) {
+func (m *MarketAttribute) readInfo(reader *ClassReader) {
 	// do nothing
 }

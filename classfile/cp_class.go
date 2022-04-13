@@ -1,8 +1,4 @@
-package constantpool
-
-import (
-	"pineapple/classfile"
-)
+package classfile
 
 /*
 CONSTANT_Class_info {
@@ -17,8 +13,8 @@ type ConstantClassInfo struct {
 	nameIndex uint16
 }
 
-func (c *ConstantClassInfo) readInfo(reader *classfile.ClassReader) {
-	c.nameIndex = reader.ReadUint16()
+func (c *ConstantClassInfo) readInfo(reader *ClassReader) {
+	c.nameIndex = reader.readUint16()
 }
 func (c *ConstantClassInfo) Name() string {
 	return c.constantPool.GetUtf8(c.nameIndex)

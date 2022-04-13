@@ -1,4 +1,4 @@
-package constantpool
+package classfile
 
 const (
 	// CONSTANT_Utf8_info UTF-8 编码的字符串
