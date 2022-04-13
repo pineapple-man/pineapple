@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 )
 
+// ZipEntry zip 或 jar 文件形式的类路径
 type ZipEntry struct {
 	absPath string
 }

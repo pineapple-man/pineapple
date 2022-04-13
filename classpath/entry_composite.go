@@ -5,11 +5,12 @@ import (
 	"strings"
 )
 
+// 由许多 Entry 组成
 type CompositeEntry []Entry
 
 func newCompositeEntry(pathList string) CompositeEntry {
 	var compositeEntry []Entry
-	for _, path := range strings.Split(pathList, pathListSeparator) {
+	for _, path := range strings.Split(pathList, PATH_LIST_SEPARATOR) {
 		entry := newEntry(path)
 		compositeEntry = append(compositeEntry, entry)
 	}
@@ -30,5 +31,5 @@ func (c CompositeEntry) String() string {
 	for i, entry := range c {
 		compositeEntryStrings[i] = entry.String()
 	}
-	return strings.Join(compositeEntryStrings, pathListSeparator)
+	return strings.Join(compositeEntryStrings, PATH_LIST_SEPARATOR)
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// wildcardEntry 实际上也是 compositeEntry
 func newWildcardEntry(path string) CompositeEntry {
 	baseDir := path[:len(path)-1] // remove *
 	var compositeEntry []Entry

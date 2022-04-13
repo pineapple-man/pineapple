@@ -5,8 +5,9 @@ import (
 	"strings"
 )
 
-const pathListSeparator = string(os.PathListSeparator)
+const PATH_LIST_SEPARATOR = string(os.PathListSeparator)
 
+// Entry 类路径项
 type Entry interface {
 	// ReadClass 方法的参数是 class 文件的相对路径，路径之间用斜线 `/` 分隔，文件名有 `.class` 后缀
 	ReadClass(className string) ([]byte, Entry, error)
@@ -14,7 +15,7 @@ type Entry interface {
 }
 
 func newEntry(path string) Entry {
-	if strings.Contains(path, pathListSeparator) {
+	if strings.Contains(path, PATH_LIST_SEPARATOR) {
 		return newCompositeEntry(path)
 	}
 	if strings.HasSuffix(path, "*") {

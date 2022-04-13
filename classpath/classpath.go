@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// Classpath 存在三个字段，分别存放三种类路径
 type Classpath struct {
 	bootClasspath Entry
 	extClasspath  Entry

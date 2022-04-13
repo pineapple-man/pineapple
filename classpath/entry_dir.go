@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// DirEntry 目录形式的类路径
 type DirEntry struct {
 	AbsDir string
 }
